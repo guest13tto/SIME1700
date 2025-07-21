@@ -1,9 +1,8 @@
 import time
 import socket
-
+import math
 # No need to modify this function
 def udp_sender(server_ip, server_port, message):
-    return  # delete this line for sending command
     # Create a UDP socket
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
@@ -133,16 +132,52 @@ def inverse_kinematics(task_space_pos):
     this function is used to generate the joint space position from the task space position
     task_space_pos: task space position 
     '''
-    l1 = 159
-    l2 = 264
-    l3 = 30
-    l4 = 258
-    # Get the joint space position
-    theta_1 = <fill_in_your_code>
-    theta_2 = <fill_in_your_code>
-    theta_3 = <fill_in_your_code>
+    
+    # This function converts task space to joint space
+    # Input: Task space coord. For example TaskSpace2JointSpace(10, 20, 10)
+    # Output: A list of joint angles. For example [-26.56505117707799, 43.33991400145487, -65.29185017692065]
+    l1 = 7.7
+    l2 = 12.7
+    l3 = 2.5
+    l4 = 11.6
+    x = task_space_pos[0]
+    y = -task_space_pos[1]
+    z = task_space_pos[2]
+    # y = -y
+    angles = [0 for i in range(3)]
+    l23 = math.sqrt(l2 * l2 + l3 * l3)
+    alpha = math.atan(l3/l2)
 
-    return [theta_1, theta_2, theta_3]
+    if x == 0:
+        angles[0] = math.pi / 2
+    else:
+        if x > 0:
+            angles[0] = math.atan(-y/x)
+        else:
+            angles[0] = math.pi - math.atan(y/x)
+
+    A = -y * math.sin(angles[0]) + x * math.cos(angles[0])
+
+    B = z - l1
+
+    tmp = (A * A + B * B - (l23 * l23 + l4 * l4)) / (2 * l23 * l4)
+    if tmp < -1:
+        tmp = -0.999999
+    if tmp > 1:
+        tmp = 0.99999
+    angles[2] = -math.acos(tmp)
+    if (A * (l23 + l4 * math.cos(angles[2])) + B * l4 * math.sin(angles[2])) > 0:
+        angles[1] = math.atan((B * (l23 + l4 * math.cos(angles[2])) - A * l4 * math.sin(angles[2])) /
+                               (A * (l23 + l4 * math.cos(angles[2])) + B * l4 * math.sin(angles[2])))
+    else:
+        angles[1] = math.pi - math.atan((B * (l23 + l4 * math.cos(angles[2])) - A * l4 * math.sin(angles[2])) /
+                                          -(A * (l23 + l4 * math.cos(angles[2])) + B * l4 * math.sin(angles[2])))
+
+    angles[0] = angles[0] / math.pi * 180 - 90
+    angles[1] = (angles[1] + alpha) / math.pi * 180
+    angles[2] = (angles[2] - alpha) / math.pi * 180
+
+    return angles
 
 # Example 2: Static Color List
 def static_color_list(color, time_spend, frequency=50):

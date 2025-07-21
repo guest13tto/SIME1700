@@ -62,7 +62,7 @@ def trajectory_to_file(traj_list, color_list, prefix="angle"):
     f.close()
 
 # Example 1: Linear Trajectory
-def linear_trajectory(start_pos, end_pos, end_time, frequency=50):
+def linear_trajectory(start_pos, end_pos, end_time,main_traj, frequency=50):
     '''
     this function is used to generate a linear trajectory
     start_pos: list of start position (or angles)
@@ -89,11 +89,12 @@ def linear_trajectory(start_pos, end_pos, end_time, frequency=50):
         # Generate the trajectory
         for t in time_list:
             # linear interpolation
-            result[i].append(a0 + a1 * t)
-    return result
+            main_traj[i].append(a0 + a1 * t)
+
+    return main_traj
 
 # Task 1: Cubic Trajectory for Two Points
-def cubic_trajectory(start_pos, end_pos, start_vel, end_vel, end_time, frequency=50):
+def cubic_trajectory(start_pos, end_pos, start_vel, end_vel, end_time,main_traj, frequency=50):
     '''
     this function is used to generate a cubic trajectory
     start_pos: list of start position 
@@ -123,8 +124,8 @@ def cubic_trajectory(start_pos, end_pos, start_vel, end_vel, end_time, frequency
         # Generate the trajectory
         for t in time_list:
             # cubic interpolation
-            result[i].append(a0*t**3+a1*t**2+a2*t+a3)
-    return result
+            main_traj[i].append(a0*t**3+a1*t**2+a2*t+a3)
+    return main_traj
 
 # Task 3: Inverse Kinematics
 def inverse_kinematics(task_space_pos):
@@ -180,24 +181,21 @@ def inverse_kinematics(task_space_pos):
     return angles
 
 # Example 2: Static Color List
-def static_color_list(color, time_spend, frequency=50):
+def static_color_list(color, time_spend, main_colour, frequency=50):
     '''
     this function is used to generate a list of static color
     color: list of color
     time_spend: time spend of the trajectory (in seconds)
     frequency: frequency of the trajectory
     '''
-    # Define the result
-    result = []
-
     # List of time for each frame
-    time_list = []
-    for i in range(time_spend * frequency):
-        result.append(color)
-    return result
+    for j in range(time_spend * frequency):
+        for i in range(3):
+            main_colour[i].append(color[i])
+    return main_colour
 
 # Task 4(Optional): Generate the color trajectory
-def generate_linear_color_list(start_color, end_color, end_time, frequency=50):
+def generate_linear_color_list(start_color, end_color, end_time, main_colour, frequency=50):
     '''
     this function is used to generate a list color that changes linearly from start_color to end_color
     start_color: list of start color
@@ -221,31 +219,35 @@ def generate_linear_color_list(start_color, end_color, end_time, frequency=50):
 
         # Generate the trajectory
         for t in time_list:
-            result[i].append(a0+a1*end_time)
-    return result
+            main_colour[i].append(a0+a1*t)
+    return main_colour
 
 
 # Task 4: Generate the trajectories
 if __name__ == "__main__":
     # Set the frequency
     frequency = 50
-    
+    task_space_trajectory = [[],[],[]]
+    color_trajectory = [[],[],[]]
+
     # Generate the task space trajectory
-    task_space_trajectory_1 = linear_trajectory([0, 0, 0], [90, 90, 90], 2, frequency)
-    task_space_trajectory_2 = linear_trajectory([90, 90, 90], [0, 0, 0], 2, frequency)
 
-    color_trajectory_1 = static_color_list([0, 0, 0], 2, frequency)
-    color_trajectory_2 = static_color_list([255, 255, 255], 2, frequency)
 
-    # Concatenate the two trajectories
-    task_space_trajectory = concatenate_trajectories(task_space_trajectory_1, task_space_trajectory_2)
+    task_space_trajectory_1 = linear_trajectory([0, 0, 0], [10,10,10], 10,task_space_trajectory, 1)
+    task_space_trajectory_2 = linear_trajectory([0, 0, 0], [10,10,10], 10,task_space_trajectory, 1)
 
-    color_trajectory = concatenate_trajectories(color_trajectory_1, color_trajectory_2)
+
+    # generate colour trajectory
+    color_trajectory_1 = static_color_list([0, 0, 0], 2,color_trajectory, frequency)
+    color_trajectory_2 = static_color_list([255, 255, 255], 2,color_trajectory, frequency)
+
 
     # Generate the joint space trajectory
-    joint_space_trajectory = []
-    for i in range(len(task_space_trajectory)):
-        joint_space_trajectory.append(inverse_kinematics(task_space_trajectory[i]))
+    joint_space_trajectory = [[], [], []]
+    for i in range(len(task_space_trajectory[0])):
+        joint_space_point = inverse_kinematics([task_space_trajectory[0][i], task_space_trajectory[1][i], task_space_trajectory[2][i]])
+        for j in range(3):
+            joint_space_trajectory[j].append(joint_space_point[j])
 
     # Generate the trajectory file for simulator
     trajectory_to_file(joint_space_trajectory, color_trajectory, "angle")

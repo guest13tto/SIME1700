@@ -116,15 +116,15 @@ def cubic_trajectory(start_pos, end_pos, start_vel, end_vel, end_time, frequency
 
     for i in range(3):
         # Get the coefficients
-        a0 = <fill_in_your_code>
-        a1 = <fill_in_your_code>
-        a2 = <fill_in_your_code>
-        a3 = <fill_in_your_code>
-
+        a2 = start_vel[i]
+        a3 = start_pos[i]
+        a0 = (-2*end_pos[i]+2*start_pos[i]+end_time*(start_vel[i]+end_vel[i]))/end_time**3
+        a1 = (end_pos[i]-start_pos[i]-end_time*start_vel[i]-(end_time**3)*a0)/end_time**2
+        
         # Generate the trajectory
         for t in time_list:
             # cubic interpolation
-            result[i].append(<fill_in_your_code>)
+            result[i].append(a0*t**3+a1*t**2+a2*t+a3)
     return result
 
 # Task 3: Inverse Kinematics
@@ -176,8 +176,8 @@ def generate_linear_color_list(start_color, end_color, end_time, frequency=50):
     # Repeat the process for each red, green, blue component
     for i in range(3):
         # Get the coefficients
-        a0 = <fill_in_your_code>
-        a1 = <fill_in_your_code>
+        a0 = start_color[i]
+        a1 = (end_color[i] - start_color[i]) / end_time
 
         # List of time for each frame
         time_list = []
@@ -186,7 +186,7 @@ def generate_linear_color_list(start_color, end_color, end_time, frequency=50):
 
         # Generate the trajectory
         for t in time_list:
-            result[i].append(<fill_in_your_code>)
+            result[i].append(a0+a1*end_time)
     return result
 
 

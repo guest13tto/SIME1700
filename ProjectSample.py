@@ -77,7 +77,7 @@ def linear_trajectory(start_pos, end_pos, end_time,main_traj, frequency=50):
 
     # List of time for each frame
     time_list = []
-    for i in range(end_time * frequency):
+    for i in range(int(end_time * frequency)):
         time_list.append(i / frequency)
 
     # Repeat the process for each joint
@@ -111,7 +111,7 @@ def cubic_trajectory(start_pos, end_pos, start_vel, end_vel, end_time,main_traj,
 
     # List of time for each frame
     time_list = []
-    for i in range(end_time * frequency):
+    for i in range(int(end_time * frequency)):
         time_list.append(i / frequency)
 
     for i in range(3):
@@ -189,7 +189,7 @@ def static_color_list(color, time_spend, main_colour, frequency=50):
     frequency: frequency of the trajectory
     '''
     # List of time for each frame
-    for j in range(time_spend * frequency):
+    for j in range(int(time_spend * frequency)):
         for i in range(3):
             main_colour[i].append(color[i])
     return main_colour
@@ -214,7 +214,7 @@ def generate_linear_color_list(start_color, end_color, end_time, main_colour, fr
 
         # List of time for each frame
         time_list = []
-        for i in range(end_time * frequency):
+        for i in range(int(end_time * frequency)):
             time_list.append(i / frequency)
 
         # Generate the trajectory
@@ -230,16 +230,68 @@ if __name__ == "__main__":
     task_space_trajectory = [[],[],[]]
     color_trajectory = [[],[],[]]
 
-    # Generate the task space trajectory
+    # Generate the task space trajectory for the rubiks cube
+    task_space_trajectory_0 = linear_trajectory([8.75, 11.25, 3.75], [8.75, 11.25, 1.25], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_1 = linear_trajectory([8.75, 11.25, 1.25], [8.75, 18.75, 1.25], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_2 = linear_trajectory([8.75, 18.75, 1.25], [8.75, 18.75, 3.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_3 = linear_trajectory([8.75, 18.75, 3.75], [8.75, 11.25, 3.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_4 = linear_trajectory([8.75, 11.25, 3.75], [8.75, 11.25, 6.25], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_5 = linear_trajectory([8.75, 11.25, 6.25], [8.75, 18.75, 6.25], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_6 = linear_trajectory([8.75, 18.75, 6.25], [8.75, 18.75, 8.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_7 = linear_trajectory([8.75, 18.75, 8.75], [8.75, 11.25, 8.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_8 = linear_trajectory([8.75, 11.25, 8.75], [8.75, 11.25, 3.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_9 = linear_trajectory([8.75, 11.25, 3.75], [8.75, 18.75, 3.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_10 = linear_trajectory([8.75, 18.75, 3.75], [8.75, 18.75, 6.25], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_11 = linear_trajectory([8.75, 18.75, 6.25], [8.75, 11.25, 6.25], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_12 = linear_trajectory([8.75, 11.25, 6.25], [8.75, 11.25, 8.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_13 = linear_trajectory([8.75, 11.25, 8.75], [8.75, 13.75, 8.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_14 = linear_trajectory([8.75, 13.75, 8.75], [8.75, 13.75, 3.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_15 = linear_trajectory([8.75, 13.75, 3.75], [8.75, 16.25, 3.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_16 = linear_trajectory([8.75, 16.25, 3.75], [8.75, 16.25, 8.75], 0.5, task_space_trajectory, frequency)
+    #Colour Change
+
+    task_space_trajectory_17 = linear_trajectory([8.75, 16.25, 8.75], [8.75, 18.75, 8.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_18 = linear_trajectory([8.75, 18.75, 8.75], [1.25, 18.75, 8.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_19 = linear_trajectory([1.25, 18.75, 8.75], [1.25, 11.25, 8.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_20 = linear_trajectory([1.25, 11.25, 8.75], [8.75, 11.25, 8.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_21 = linear_trajectory([8.75, 11.25, 8.75], [8.75, 16.25, 8.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_22 = linear_trajectory([8.75, 16.25, 8.75], [1.25, 16.25, 8.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_23 = linear_trajectory([1.25, 16.25, 8.75], [1.25, 13.75, 8.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_24 = linear_trajectory([1.25, 13.75, 8.75], [8.75, 13.75, 8.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_25 = linear_trajectory([8.75, 13.75, 8.75], [8.75, 18.75, 8.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_26 = linear_trajectory([8.75, 18.75, 8.75], [6.25, 18.75, 8.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_27 = linear_trajectory([6.25, 18.75, 8.75], [6.25, 11.25, 8.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_28 = linear_trajectory([6.25, 11.25, 8.75], [3.75, 11.25, 8.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_29 = linear_trajectory([3.75, 11.25, 8.75], [3.75, 18.75, 8.75], 0.5, task_space_trajectory, frequency)
+    #Colour Change
+
+    task_space_trajectory_30 = linear_trajectory([3.75, 18.75, 8.75], [8.75, 18.75, 8.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_31 = linear_trajectory([8.75, 18.75, 8.75], [8.75, 18.75, 1.25], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_32 = linear_trajectory([8.75, 18.75, 1.25], [1.25, 18.75, 1.25], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_33 = linear_trajectory([1.25, 18.75, 1.25], [1.25, 18.75, 8.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_34 = linear_trajectory([1.25, 18.75, 8.75], [3.75, 18.75, 8.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_35 = linear_trajectory([3.75, 18.75, 8.75], [3.75, 18.75, 1.25], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_36 = linear_trajectory([3.75, 18.75, 1.25], [6.25, 18.75, 1.25], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_37 = linear_trajectory([6.25, 18.75, 1.25], [6.25, 18.75, 8.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_38 = linear_trajectory([6.25, 18.75, 8.75], [8.75, 18.75, 8.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_39 = linear_trajectory([8.75, 18.75, 8.75], [8.75, 18.75, 6.25], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_40 = linear_trajectory([8.75, 18.75, 6.25], [1.25, 18.75, 6.25], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_41 = linear_trajectory([1.25, 18.75, 6.25], [1.25, 18.75, 3.75], 0.5, task_space_trajectory, frequency)
+    task_space_trajectory_42 = linear_trajectory([1.25, 18.75, 3.75], [8.75, 18.75, 3.75], 0.5, task_space_trajectory, frequency)
 
 
-    task_space_trajectory_1 = linear_trajectory([0, 0, 0], [10,10,10], 10,task_space_trajectory, 1)
-    task_space_trajectory_2 = linear_trajectory([0, 0, 0], [10,10,10], 10,task_space_trajectory, 1)
+
+    color_trajectory_1 = static_color_list([255, 0, 0], 8.5,color_trajectory, frequency)
+    color_trajectory_2 = static_color_list([0, 255, 0], 6.5,color_trajectory, frequency)
+    color_trajectory_3 = static_color_list([0, 0, 255], 6.5,color_trajectory, frequency)
+
+    # task_space_trajectory_1 = linear_trajectory([0, 0, 0], [10,10,10], 10,task_space_trajectory, 1)
+    # task_space_trajectory_2 = linear_trajectory([0, 0, 0], [10,10,10], 10,task_space_trajectory, 1)
 
 
     # generate colour trajectory
-    color_trajectory_1 = static_color_list([0, 0, 0], 2,color_trajectory, frequency)
-    color_trajectory_2 = static_color_list([255, 255, 255], 2,color_trajectory, frequency)
+    # color_trajectory_1 = static_color_list([0, 0, 0], 2,color_trajectory, task_space_trajectory, frequency)
+    # color_trajectory_2 = static_color_list([255, 255, 255], 2,color_trajectory, task_space_trajectory, frequency)
 
 
     # Generate the joint space trajectory
